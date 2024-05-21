@@ -1,0 +1,12 @@
+#### Docker Environment Variables
+
+IMAGE=traefik:v2.9
+
+LOCAL_IP=<IP where traefik is running>
+
+# Traefik
+EMAIL=<youremail>
+CLOUDFLARE_API_KEY=<Cloudflare API Key>
+DOMAIN=<your domain name>
+BASIC_USER_AUTH=<htpasswd>
+

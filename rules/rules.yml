@@ -1,0 +1,71 @@
+http:
+  routers:
+    traefik_https:
+      entrypoints:
+        - websecure
+      middlewares:
+        - auth
+        - whitelist
+      service: api@internal
+      rule: Host(`traefik.yourdomain.net`)
+      tls:
+        #certResolver: "dnsresolver"
+        domains:
+          - main: "traefik.yourdomain.net"
+            #sans: "*.yourdomain.net"
+    plex:
+      entrypoints:
+        - websecure
+      service: plex
+      rule: Host(`plex.yourdomain.net`)
+      tls:
+        domains:
+          - main: "plex.yourdomain.net"
+
+    vaultwarden:
+      entrypoints:
+        - websecure
+      service: vaultwarden
+      rule: Host(`vaultwarden.yourdomain.net`)
+      tls:
+        domains:
+          - main: "vaultwarden.yourdomain.net"
+
+    nextcloud:
+      entrypoints:
+        - websecure
+      service: nextcloud
+      rule: Host(`cloud.yourdomain.net`)
+      tls:
+        domains:
+          - main: "cloud.yourdomain.net"
+
+
+  services:
+    plex:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.100:32400"
+    
+    vaultwarden: 
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.10:9999"
+
+    nextcloud:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.10:8282"
+
+
+  middlewares:
+    whitelist:
+      ipWhiteList:
+        sourceRange:
+          ["192.168.0.0/16"]
+
+    auth:
+      basicauth:
+        usersFile: "/shared/.htpasswd"
+        #users:${BASIC_USER_AUTH}
+        realm: "home"

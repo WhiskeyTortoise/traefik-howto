@@ -1,0 +1,4 @@
+Install apache2-utils
+Run below it will prompt for password and generate file.
+
+htpasswd -c .htpasswd <username>
